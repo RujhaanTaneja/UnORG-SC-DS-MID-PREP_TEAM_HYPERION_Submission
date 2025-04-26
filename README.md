@@ -25,22 +25,16 @@ The key challenges include:
 
 ### 1. Customer Order Prediction
 
-- **Feature Engineering**: Created 20+ features, including:
-  - Average order gap
-  - Total orders
-  - Order consistency score
-- **Clustering**: Segmented customers into:
-  - Regulars
-  - Seldom buyers
-  - Few-timers
-- **Model**: Hybrid **Clustering + LSTM** model deployed to predict 14-day order probabilities for regular customers (Cluster 2).
+- Feature Engineering: Created 20+ features like average order gap, total orders, order consistency score, and customer segmentation (clustered into regulars, seldom buyers, and few-timers).
+- Clustering: Used unsupervised clustering to segment customers based on purchase behavior.
+- LSTM-based Prediction Model: For regular customers (Cluster 2), a Clustering + LSTM hybrid was deployed to predict daily ordering probabilities across a 14-day horizon.
 
 ---
 
 ### 2. SKU Demand Forecasting
 
 - **Model**: **LightGBM Regressor** trained on daily SKU-customer order quantities.
-- **Temporal Engineering**: Careful design of training, validation, and test windows to capture seasonality (e.g., post-New Year surges).
+- **Temporal Engineering**: Careful design of calendar features, training, validation, and test windows to capture seasonality (e.g., post-New Year surges).
 
 ---
 
@@ -50,9 +44,9 @@ The key challenges include:
 - **Strategy**:
   - Forecast demand per SKU at the warehouse level.
   - Calculate safety stock using demand standard deviation and 95% service level z-scores.
-  - Derive **Order Quantity** = Target Inventory - Current Inventory (simulated if unavailable).
+  - Derive **Order Quantity** = Target Inventory - Current Inventory.
 
-> **Note**: Predicting daily orders is inherently a sparse, low-recall, high-precision problem. The approach smartly prioritized actionable customer clusters for reliable forecasts.
+> **Note** Prediction of rare events (customers placing orders on a specific day) is a naturally low-recall, high-precision problem, which the team handled carefully by prioritizing actionable segments (Cluster 2 customers)
 
 ---
 
